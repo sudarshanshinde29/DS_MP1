@@ -1,0 +1,17 @@
+syntax = "proto3";
+package grep;
+option go_package = "DS_MP1/protoBuilds;grep";
+
+service GrepService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+}
+
+message SearchRequest {
+  repeated string grepOptions = 1;
+}
+
+message SearchResponse {
+  string host = 1;
+  string filePath = 2;
+  string log = 3;
+}
