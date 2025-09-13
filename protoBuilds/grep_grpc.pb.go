@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GrepServiceClient interface {
-	Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SearchResponse, error)
+	Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[SearchResponse], error)
 }
 
 type grepServiceClient struct {
@@ -37,21 +37,30 @@ func NewGrepServiceClient(cc grpc.ClientConnInterface) GrepServiceClient {
 	return &grepServiceClient{cc}
 }
 
-func (c *grepServiceClient) Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SearchResponse, error) {
+func (c *grepServiceClient) Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[SearchResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SearchResponse)
-	err := c.cc.Invoke(ctx, GrepService_Search_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &GrepService_ServiceDesc.Streams[0], GrepService_Search_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[SearchRequest, SearchResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type GrepService_SearchClient = grpc.ServerStreamingClient[SearchResponse]
 
 // GrepServiceServer is the server API for GrepService service.
 // All implementations must embed UnimplementedGrepServiceServer
 // for forward compatibility.
 type GrepServiceServer interface {
-	Search(context.Context, *SearchRequest) (*SearchResponse, error)
+	Search(*SearchRequest, grpc.ServerStreamingServer[SearchResponse]) error
 	mustEmbedUnimplementedGrepServiceServer()
 }
 
@@ -62,8 +71,8 @@ type GrepServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedGrepServiceServer struct{}
 
-func (UnimplementedGrepServiceServer) Search(context.Context, *SearchRequest) (*SearchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
+func (UnimplementedGrepServiceServer) Search(*SearchRequest, grpc.ServerStreamingServer[SearchResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method Search not implemented")
 }
 func (UnimplementedGrepServiceServer) mustEmbedUnimplementedGrepServiceServer() {}
 func (UnimplementedGrepServiceServer) testEmbeddedByValue()                     {}
@@ -86,23 +95,16 @@ func RegisterGrepServiceServer(s grpc.ServiceRegistrar, srv GrepServiceServer) {
 	s.RegisterService(&GrepService_ServiceDesc, srv)
 }
 
-func _GrepService_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SearchRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+func _GrepService_Search_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(SearchRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(GrepServiceServer).Search(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: GrepService_Search_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GrepServiceServer).Search(ctx, req.(*SearchRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(GrepServiceServer).Search(m, &grpc.GenericServerStream[SearchRequest, SearchResponse]{ServerStream: stream})
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type GrepService_SearchServer = grpc.ServerStreamingServer[SearchResponse]
 
 // GrepService_ServiceDesc is the grpc.ServiceDesc for GrepService service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -110,12 +112,13 @@ func _GrepService_Search_Handler(srv interface{}, ctx context.Context, dec func(
 var GrepService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "grep.GrepService",
 	HandlerType: (*GrepServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "Search",
-			Handler:    _GrepService_Search_Handler,
+			StreamName:    "Search",
+			Handler:       _GrepService_Search_Handler,
+			ServerStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "grep.proto",
 }

@@ -1,17 +1,19 @@
 syntax = "proto3";
 package grep;
-option go_package = "DS_MP1/protoBuilds;grep";
+option go_package = "MP1/protoBuilds;grep";
 
 service GrepService {
-  rpc Search (SearchRequest) returns (SearchResponse);
+  rpc Search (SearchRequest) returns (stream SearchResponse);
 }
 
 message SearchRequest {
-  repeated string grepOptions = 1;
+  repeated string grepOptions = 1; // passed to grep as-is
+  string mode = 2;                 // "lines" or "count"
 }
 
 message SearchResponse {
-  string host = 1;
-  string filePath = 2;
-  string log = 3;
+  string host = 1;      // worker label
+  string filePath = 2;  // when mode=="lines"
+  string log = 3;       // when mode=="lines"
+  int64 count = 4;      // when mode=="count", sum across files on worker
 }

@@ -23,7 +23,8 @@ const (
 
 type SearchRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	GrepOptions   []string               `protobuf:"bytes,1,rep,name=grepOptions,proto3" json:"grepOptions,omitempty"`
+	GrepOptions   []string               `protobuf:"bytes,1,rep,name=grepOptions,proto3" json:"grepOptions,omitempty"` // passed to grep as-is
+	Mode          string                 `protobuf:"bytes,2,opt,name=mode,proto3" json:"mode,omitempty"`               // "lines" or "count"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,11 +66,19 @@ func (x *SearchRequest) GetGrepOptions() []string {
 	return nil
 }
 
+func (x *SearchRequest) GetMode() string {
+	if x != nil {
+		return x.Mode
+	}
+	return ""
+}
+
 type SearchResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Host          string                 `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`
-	FilePath      string                 `protobuf:"bytes,2,opt,name=filePath,proto3" json:"filePath,omitempty"`
-	Log           string                 `protobuf:"bytes,3,opt,name=log,proto3" json:"log,omitempty"`
+	Host          string                 `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`         // worker label
+	FilePath      string                 `protobuf:"bytes,2,opt,name=filePath,proto3" json:"filePath,omitempty"` // when mode=="lines"
+	Log           string                 `protobuf:"bytes,3,opt,name=log,proto3" json:"log,omitempty"`           // when mode=="lines"
+	Count         int64                  `protobuf:"varint,4,opt,name=count,proto3" json:"count,omitempty"`      // when mode=="count", sum across files on worker
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -125,20 +134,29 @@ func (x *SearchResponse) GetLog() string {
 	return ""
 }
 
+func (x *SearchResponse) GetCount() int64 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
 var File_grep_proto protoreflect.FileDescriptor
 
 const file_grep_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"grep.proto\x12\x04grep\"1\n" +
+	"grep.proto\x12\x04grep\"E\n" +
 	"\rSearchRequest\x12 \n" +
-	"\vgrepOptions\x18\x01 \x03(\tR\vgrepOptions\"R\n" +
+	"\vgrepOptions\x18\x01 \x03(\tR\vgrepOptions\x12\x12\n" +
+	"\x04mode\x18\x02 \x01(\tR\x04mode\"h\n" +
 	"\x0eSearchResponse\x12\x12\n" +
 	"\x04host\x18\x01 \x01(\tR\x04host\x12\x1a\n" +
 	"\bfilePath\x18\x02 \x01(\tR\bfilePath\x12\x10\n" +
-	"\x03log\x18\x03 \x01(\tR\x03log2B\n" +
-	"\vGrepService\x123\n" +
-	"\x06Search\x12\x13.grep.SearchRequest\x1a\x14.grep.SearchResponseB\x19Z\x17DS_MP1/protoBuilds;grepb\x06proto3"
+	"\x03log\x18\x03 \x01(\tR\x03log\x12\x14\n" +
+	"\x05count\x18\x04 \x01(\x03R\x05count2D\n" +
+	"\vGrepService\x125\n" +
+	"\x06Search\x12\x13.grep.SearchRequest\x1a\x14.grep.SearchResponse0\x01B\x16Z\x14MP1/protoBuilds;grepb\x06proto3"
 
 var (
 	file_grep_proto_rawDescOnce sync.Once
