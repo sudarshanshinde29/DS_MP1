@@ -1,4 +1,4 @@
-package worker
+package main
 
 import (
 	grep "MP1/protoBuilds"
@@ -6,13 +6,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"google.golang.org/grpc"
 	"net"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"google.golang.org/grpc"
 )
 
 type server struct {
@@ -23,15 +24,20 @@ type server struct {
 }
 
 func (s *server) Search(req *grep.SearchRequest, stream grep.GrepService_SearchServer) error {
+	fmt.Fprintf(os.Stderr, "[%s] scanning logdir=%s glob=%s\n", s.workerHost, s.logDir, s.glob)
 	files, _ := filepath.Glob(filepath.Join(s.logDir, s.glob))
+	fmt.Fprintf(os.Stderr, "[%s] matched files: %v\n", s.workerHost, files)
 	if len(files) == 0 {
+		fmt.Fprintf(os.Stderr, "[%s] no files matched in %s glob %s\n", s.workerHost, s.logDir, s.glob)
 		return nil
 	}
 
 	if req.Mode == "count" {
 		args := append([]string{"-H", "-c"}, req.GrepOptions...)
 		args = append(args, files...)
+		fmt.Fprintf(os.Stderr, "[%s] running: grep %v\n", s.workerHost, args)
 		cmd := exec.CommandContext(stream.Context().(context.Context), "grep", args...)
+		fmt.Fprintf(os.Stderr, "[%s] exec: %s\n", s.workerHost, cmd.String())
 		stdout, err := cmd.StdoutPipe()
 		if err != nil {
 			return err
@@ -50,12 +56,14 @@ func (s *server) Search(req *grep.SearchRequest, stream grep.GrepService_SearchS
 				}
 			}
 		}
+		fmt.Fprintf(os.Stderr, "[%s] sending count=%d\n", s.workerHost, sum)
 		return stream.SendMsg(&grep.SearchResponse{Host: s.workerHost, Count: sum})
 	}
 
 	args := append([]string{"--line-buffered", "-H"}, req.GrepOptions...)
 	args = append(args, files...)
 	cmd := exec.CommandContext(stream.Context().(context.Context), "grep", args...)
+	fmt.Fprintf(os.Stderr, "[%s] exec: %s\n", s.workerHost, cmd.String())
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return err
