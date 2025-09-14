@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# --- CONFIG ---
+# ---configurations ---
 LOCAL_DIR="MP1 Demo Data FA22"     # folder containing vm1.log, vm2.log, ... vm10.log
 REMOTE_DIR="/root/logs"            # remote folder where we need to copy the log file
-HOSTNAME="fa25-cs425-10"
+VM_HOSTNAME="fa25-cs425-10"
 
-# --- COPY ---
+# for each VM copy log file
 for i in $(seq -w 01 10); do
-  host="${HOSTNAME}${i}.cs.illinois.edu"
+  host="${VM_HOSTNAME}${i}.cs.illinois.edu"
   n=$((10#$i))                     # 01->1, 02->2, ... 10->10
   logfile="vm${n}.log"
   src="${LOCAL_DIR}/${logfile}"
@@ -21,9 +21,9 @@ for i in $(seq -w 01 10); do
   echo ">>> ${logfile} -> root@${host}:${REMOTE_DIR}/"
   # make sure remote directory exists
   ssh -o BatchMode=yes root@"$host" "mkdir -p '$REMOTE_DIR'"
-  # Copy  file
+  # Copy the file
   scp -q "$src" root@"$host":"$REMOTE_DIR"/
-  echo "[OK]  ${logfile} -> ${host}:${REMOTE_DIR}/"
+  echo "OK: Successfully copied ${logfile} to ${host}:${REMOTE_DIR}/"
 done
 
-echo "Done."
+echo "Done COPYING log files."
