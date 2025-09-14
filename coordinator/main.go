@@ -63,12 +63,13 @@ func main() {
 
 	// DEBUG
 	//fmt.Fprintf(os.Stderr, "targets=%v labels=%v args=%v mode=%s\n", targets, labels, args, *mode)
-
+	overallStart := time.Now()
 	for i, target := range targets {
 		hostLabel := labels[i]
 		go func(target, label string) {
 			fmt.Printf("In goroutine for %s (%s)\n", label, target) // DEBUG
 			defer wg.Done()
+			workerStart := time.Now()
 			ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 			defer cancel()
 			conn, err := grpc.DialContext(ctx, target, grpc.WithInsecure(), grpc.WithBlock())
@@ -104,12 +105,14 @@ func main() {
 				}
 				fmt.Printf("[%s] %s:%s\n", label, filepath.Base(fp), resp.Log)
 			}
+			duration := time.Since(workerStart).Milliseconds()
+			fmt.Fprintf(os.Stderr, "[%s] WORKER_MS=%d\n", label, duration)
 		}(target, hostLabel)
 	}
-
 	wg.Wait()
+	fmt.Fprintf(os.Stderr, "OVERALL_MS=%d\n", time.Since(overallStart).Milliseconds())
 	if *mode == "count" {
-		fmt.Printf("TOTAL=%d\n", total)
+		fmt.Printf("TOTAL_COUNT=%d\n", total)
 	}
 }
 
