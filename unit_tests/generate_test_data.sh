@@ -50,7 +50,7 @@ EOF
 
 # Main execution
 if [ "$1" = "cleanup" ]; then
-    echo "🧹 Cleaning up test data on all VMs..."
+    echo "Cleaning up test data on all VMs..."
     for n in $(seq 1 $COUNT); do
         cleanup_test_data $n &
     done
