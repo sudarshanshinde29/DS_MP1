@@ -37,15 +37,15 @@ func GetTestCases() []TestCase {
 			Name:          "Frequent Pattern - GET",
 			GrepArgs:      []string{"-i", "-e", "GET"},
 			Mode:          "count",
-			ExpectedCount: 450, // 40 + 5 + 3 per VM × 10 VMs
+			ExpectedCount: 540, // 40(simple) + 5(regex) + 3*3(code-pattern) per VM × 10 VMs
 			ExpectedPerVM: map[string]int{
-				"vm1": 48, "vm2": 48, "vm3": 48, "vm4": 48, "vm5": 48,
-				"vm6": 48, "vm7": 48, "vm8": 48, "vm9": 48, "vm10": 48,
+				"vm1": 54, "vm2": 54, "vm3": 54, "vm4": 54, "vm5": 54,
+				"vm6": 54, "vm7": 54, "vm8": 54, "vm9": 54, "vm10": 54,
 			},
 			Description: "Test frequent pattern matching",
 		},
 		{
-			Name:          "Somewhat Frequent - PUT",
+			Name:          "Less Frequent - PUT",
 			GrepArgs:      []string{"-i", "-e", "PUT"},
 			Mode:          "count",
 			ExpectedCount: 250, // 20 + 5 per VM × 10 VMs
@@ -128,7 +128,7 @@ func RunTestCase(testCase TestCase) (*TestResult, error) {
 		"--",
 	}
 	args = append(args, testCase.GrepArgs...)
-
+	fmt.Printf("args: %v\n", args)
 	// Execute coordinator
 	cmd := exec.Command("go", args...)
 	output, err := cmd.CombinedOutput()
@@ -212,7 +212,7 @@ func RunAllTests() ([]*TestResult, error) {
 	testCases := GetTestCases()
 	var results []*TestResult
 
-	fmt.Printf("#########Running %d test cases\n", len(testCases))
+	fmt.Printf("Now Running %d test cases\n", len(testCases))
 	fmt.Println(strings.Repeat("=", 50))
 
 	for i, testCase := range testCases {
@@ -272,7 +272,7 @@ func GenerateTestReport(results []*TestResult) {
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "cleanup" {
-		fmt.Println("🧹 Cleaning up test data...")
+		fmt.Println("Cleaning up test data...")
 		cmd := exec.Command("./generate_test_data.sh", "cleanup")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
@@ -308,7 +308,7 @@ func main() {
 	time.Sleep(5 * time.Second)
 
 	// Step 4: Run tests
-	fmt.Println("@@@@@@@Running test cases...@@@@@@@")
+	fmt.Println(" Running test cases...@@@@@@@")
 	results, err := RunAllTests()
 	if err != nil {
 		log.Fatalf("Test execution failed: %v", err)
