@@ -30,7 +30,8 @@ EOF
 
 # Function to cleanup test data on a remote host
 cleanup_test_data() {
-    local n=$1
+    local host="$1"
+    local n="$2"
     local host="${VM_HOSTNAME}${n}.cs.illinois.edu"
     echo "Cleaning up test data on $host (VM$n)..."
     
@@ -53,8 +54,10 @@ if [ "$1" = "cleanup" ]; then
     echo "Cleanup completed on all VMs"
 else
     echo "OK, data generation script , Generating test data on all VMs..."
-    for n in $(seq 01 $COUNT); do
-        generate_test_data $n &
+    for XX in $(seq -w 01 "$COUNT"); do
+      host="${VM_HOSTNAME}${XX}.cs.illinois.edu"
+      n=$((10#$XX))  # 01->1
+      generate_test_data "$host" "$n" &
     done
     wait
     echo "Test data generation completed on all VMs"
