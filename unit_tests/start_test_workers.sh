@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO_DIR="/root/MP/DS_MP1"
-VM_HOSTNAME="fa25-cs425-10"    #fa25-cs425-1001.cs.illinois.edu
+VM_HOSTNAME="fa25-cs425-10"
 COUNT="${COUNT:-10}"
 
 deploy_host() {
@@ -22,13 +22,12 @@ deploy_host() {
             echo "Starting worker..."
             export GOTOOLCHAIN=auto
             go mod tidy
-            nohup go run worker/main.go -addr ":$port" -logdir /root/logs -glob "$glob" -label "$label" > "$out" 2>&1 &
+            nohup go run worker/main.go -addr ":$port" -logdir /root/generated_logs -glob "$glob" -label "$label" > "$out" 2>&1 &
 EOF
         echo "Disconnected from $host"
         echo "------------------------"
   echo "Started: $label on :$port (log -> $out)"
 }
-
 
 # for each VM , host deployment 
 for XX in $(seq -w 01 "$COUNT"); do
