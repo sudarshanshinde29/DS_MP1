@@ -158,7 +158,7 @@ func RunTestCase(testCase TestCase) (*TestResult, error) {
 			continue
 		}
 
-		// Look for VM count results: [vm1] count=123
+		// Look for VM count results
 		if strings.Contains(line, "] count=") {
 			parts := strings.Split(line, "] count=")
 			if len(parts) == 2 {

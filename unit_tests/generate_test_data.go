@@ -6,7 +6,7 @@ import (
 )
 
 func generateTestData(machineIndex string) {
-	// Define simple pattern distribution
+	// Defining simple pattern distribution for dummy data
 	patterns := map[string]int{
 		"GET":    40,
 		"PUT":    20,
@@ -40,7 +40,7 @@ func generateTestData(machineIndex string) {
 		}
 	}
 
-	// Adding some regex-friendly patterns
+	// Adding some regex patterns
 	for i := 0; i < 5; i++ {
 		fmt.Fprintf(file, "GET /api/users HTTP/1.1 200 %d\n", 1000+i)
 		fmt.Fprintf(file, "PUT /api/users HTTP/1.1 201 %d\n", 2000+i)
