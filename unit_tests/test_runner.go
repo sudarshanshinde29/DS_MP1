@@ -44,72 +44,72 @@ func GetTestCases() []TestCase {
 			},
 			Description: "Test frequent pattern matching",
 		},
-		//{
-		//	Name:          "Less Frequent - PUT",
-		//	GrepArgs:      []string{"-i", "-e", "PUT"},
-		//	Mode:          "count",
-		//	ExpectedCount: 250, // 20 + 5 per VM × 10 VMs
-		//	ExpectedPerVM: map[string]int{
-		//		"vm1": 25, "vm2": 25, "vm3": 25, "vm4": 25, "vm5": 25,
-		//		"vm6": 25, "vm7": 25, "vm8": 25, "vm9": 25, "vm10": 25,
-		//	},
-		//	Description: "Test somewhat frequent pattern",
-		//},
-		//{
-		//	Name:          "Rare Pattern - DELETE",
-		//	GrepArgs:      []string{"-i", "-e", "DELETE"},
-		//	Mode:          "count",
-		//	ExpectedCount: 50, // 5 per VM × 10 VMs
-		//	ExpectedPerVM: map[string]int{
-		//		"vm1": 5, "vm2": 5, "vm3": 5, "vm4": 5, "vm5": 5,
-		//		"vm6": 5, "vm7": 5, "vm8": 5, "vm9": 5, "vm10": 5,
-		//	},
-		//	Description: "Test rare pattern matching",
-		//},
-		//{
-		//	Name:          "Regex Pattern - Status Codes",
-		//	GrepArgs:      []string{"-E", "-e", "200|201"},
-		//	Mode:          "count",
-		//	ExpectedCount: 130, // 5+5+3 per VM × 10 VMs
-		//	ExpectedPerVM: map[string]int{
-		//		"vm1": 13, "vm2": 13, "vm3": 13, "vm4": 13, "vm5": 13,
-		//		"vm6": 13, "vm7": 13, "vm8": 13, "vm9": 13, "vm10": 13,
-		//	},
-		//	Description: "Test regex with status codes",
-		//},
-		//{
-		//	Name:          "Regex Pattern - HTTP Paths",
-		//	GrepArgs:      []string{"-E", "-e", "/api/users|/api/login"},
-		//	Mode:          "count",
-		//	ExpectedCount: 100, // 5+5 per VM × 10 VMs
-		//	ExpectedPerVM: map[string]int{
-		//		"vm1": 10, "vm2": 10, "vm3": 10, "vm4": 10, "vm5": 10,
-		//		"vm6": 10, "vm7": 10, "vm8": 10, "vm9": 10, "vm10": 10,
-		//	},
-		//	Description: "Test regex with HTTP paths",
-		//},
-		//{
-		//	Name:          "VM1 Only Pattern",
-		//	GrepArgs:      []string{"-F", "-e", "VM1_UNIQUE_PATTERN"},
-		//	Mode:          "count",
-		//	ExpectedCount: 1, // Only in VM1
-		//	ExpectedPerVM: map[string]int{
-		//		"vm1": 1, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
-		//		"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
-		//	},
-		//	Description: "Pattern should only appear in VM1",
-		//},
-		//{
-		//	Name:          "Non-existent Pattern",
-		//	GrepArgs:      []string{"-i", "-e", "NONEXISTENT"},
-		//	Mode:          "count",
-		//	ExpectedCount: 0,
-		//	ExpectedPerVM: map[string]int{
-		//		"vm1": 0, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
-		//		"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
-		//	},
-		//	Description: "Pattern should not exist anywhere",
-		//},
+		{
+			Name:          "Somewhat Frequent - PUT",
+			GrepArgs:      []string{"-i", "-e", "PUT"},
+			Mode:          "count",
+			ExpectedCount: 250, // 20 + 5 per VM × 10 VMs
+			ExpectedPerVM: map[string]int{
+				"vm1": 25, "vm2": 25, "vm3": 25, "vm4": 25, "vm5": 25,
+				"vm6": 25, "vm7": 25, "vm8": 25, "vm9": 25, "vm10": 25,
+			},
+			Description: "Test somewhat frequent pattern",
+		},
+		{
+			Name:          "Rare Pattern - DELETE",
+			GrepArgs:      []string{"-i", "-e", "DELETE"},
+			Mode:          "count",
+			ExpectedCount: 50, // 5 per VM × 10 VMs
+			ExpectedPerVM: map[string]int{
+				"vm1": 5, "vm2": 5, "vm3": 5, "vm4": 5, "vm5": 5,
+				"vm6": 5, "vm7": 5, "vm8": 5, "vm9": 5, "vm10": 5,
+			},
+			Description: "Test rare pattern matching",
+		},
+		{
+			Name:          "Regex Pattern - Status Codes",
+			GrepArgs:      []string{"-E", "-e", "200|201"},
+			Mode:          "count",
+			ExpectedCount: 180, // 5*3+3 per VM × 10 VMs
+			ExpectedPerVM: map[string]int{
+				"vm1": 15, "vm2": 15, "vm3": 15, "vm4": 15, "vm5": 15,
+				"vm6": 15, "vm7": 15, "vm8": 15, "vm9": 15, "vm10": 15,
+			},
+			Description: "Test regex with status codes",
+		},
+		{
+			Name:          "Regex Pattern - HTTP Paths",
+			GrepArgs:      []string{"-E", "-e", "/api/users|/api/login"},
+			Mode:          "count",
+			ExpectedCount: 150, // 5*3 per VM × 10 VMs
+			ExpectedPerVM: map[string]int{
+				"vm1": 15, "vm2": 15, "vm3": 15, "vm4": 15, "vm5": 15,
+				"vm6": 15, "vm7": 15, "vm8": 15, "vm9": 15, "vm10": 15,
+			},
+			Description: "Test regex with HTTP paths",
+		},
+		{
+			Name:          "VM1 Only Pattern",
+			GrepArgs:      []string{"-F", "-e", "VM1_UNIQUE_PATTERN"},
+			Mode:          "count",
+			ExpectedCount: 1, // Only in VM1
+			ExpectedPerVM: map[string]int{
+				"vm1": 1, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
+				"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
+			},
+			Description: "Pattern should only appear in VM1",
+		},
+		{
+			Name:          "Non-existent Pattern",
+			GrepArgs:      []string{"-i", "-e", "NONEXISTENT"},
+			Mode:          "count",
+			ExpectedCount: 0,
+			ExpectedPerVM: map[string]int{
+				"vm1": 0, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
+				"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
+			},
+			Description: "Pattern should not exist anywhere",
+		},
 	}
 }
 
@@ -129,6 +129,7 @@ func RunTestCase(testCase TestCase) (*TestResult, error) {
 	}
 	args = append(args, testCase.GrepArgs...)
 	fmt.Printf("args: %v\n", args)
+
 	// Execute coordinator
 	cmd := exec.Command("go", args...)
 	output, err := cmd.CombinedOutput()
@@ -191,15 +192,20 @@ func RunTestCase(testCase TestCase) (*TestResult, error) {
 		for vm, expected := range testCase.ExpectedPerVM {
 			if actual, exists := result.ActualPerVM[vm]; !exists || actual != expected {
 				result.Passed = false
-				result.ErrorMessage = fmt.Sprintf("VM %s: expected %d, got %d",
-					vm, expected, actual)
+				result.ErrorMessage = fmt.Sprintf("VM %s: expected %d, got %d (actual: %v)",
+					vm, expected, actual, result.ActualPerVM)
 				break
 			}
 		}
 	}
 
+	// Debug: Print per-VM results for failed tests
+	if !result.Passed {
+		fmt.Printf("------ - Per-VM results: %v\n", result.ActualPerVM)
+	}
+
 	if result.Passed {
-		fmt.Printf("******** PASSED: Found %d (expected %d)*********\n", result.ActualCount, testCase.ExpectedCount)
+		fmt.Printf("******** PASSED:- Found %d (expected %d)*********\n", result.ActualCount, testCase.ExpectedCount)
 	} else {
 		fmt.Printf("XXXXXXXXXFAILED: %s\n", result.ErrorMessage)
 	}
@@ -270,6 +276,30 @@ func GenerateTestReport(results []*TestResult) {
 	fmt.Println(strings.Repeat("=", 50))
 }
 
+// checkWorkers verifies that workers are running on all VMs
+func checkWorkers() {
+	VM_HOSTNAME := "fa25-cs425-10"
+	count := 10
+
+	for n := 1; n <= count; n++ {
+		host := fmt.Sprintf("%s%d.cs.illinois.edu", VM_HOSTNAME, n)
+		port := 6000 + n
+
+		// Check if port is listening
+		cmd := exec.Command("ssh", "-o", "ConnectTimeout=5", "-o", "BatchMode=yes",
+			"-o", "StrictHostKeyChecking=accept-new",
+			fmt.Sprintf("root@%s", host),
+			fmt.Sprintf("lsof -ti:%d", port))
+
+		output, err := cmd.Output()
+		if err != nil || len(output) == 0 {
+			fmt.Printf(" Worker on VM%d (%s) not responding on port %d\n", n, host, port)
+		} else {
+			fmt.Printf("[OK] Worker on VM%d (%s) is running on port %d\n", n, host, port)
+		}
+	}
+}
+
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "cleanup" {
 		fmt.Println("Cleaning up test data...")
@@ -294,6 +324,10 @@ func main() {
 		log.Fatalf("Failed to generate test data: %v", err)
 	}
 
+	// Wait for data generation to complete
+	fmt.Println("Waiting for data generation to complete...")
+	time.Sleep(5 * time.Second)
+
 	// Step 2: Start workers on all VMs
 	fmt.Println("Starting workers on all VMs...")
 	cmd = exec.Command("./start_test_workers.sh")
@@ -305,10 +339,14 @@ func main() {
 
 	// Step 3: Wait for workers to be ready
 	fmt.Println("Waiting for workers to be ready...")
-	time.Sleep(5 * time.Second)
+	time.Sleep(10 * time.Second) // Increased wait time
+
+	// Check if workers are actually running
+	fmt.Println("Checking worker status...")
+	checkWorkers()
 
 	// Step 4: Run tests
-	fmt.Println(" Running test cases...@@@@@@@")
+	fmt.Println("@@@@@@@Running test cases...@@@@@@@")
 	results, err := RunAllTests()
 	if err != nil {
 		log.Fatalf("Test execution failed: %v", err)
