@@ -7,8 +7,9 @@ COUNT="${COUNT:-10}"
 
 # Function to generate test data on a remote host
 generate_test_data() {
-    local n=$1
-    local host="${VM_HOSTNAME}${n}.cs.illinois.edu"
+    local host="$1"
+    local n="$2"
+
     echo "Connecting to $host (VM$n)..."
     
     ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new root@"$host" << EOF
@@ -32,7 +33,7 @@ EOF
 cleanup_test_data() {
     local host="$1"
     local n="$2"
-    local host="${VM_HOSTNAME}${n}.cs.illinois.edu"
+
     echo "Cleaning up test data on $host (VM$n)..."
     
     ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new root@"$host" << EOF
