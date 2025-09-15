@@ -39,8 +39,8 @@ func GetTestCases() []TestCase {
 			Mode:          "count",
 			ExpectedCount: 540, // 40(simple) + 5(regex) + 3*3(code-pattern) per VM × 10 VMs
 			ExpectedPerVM: map[string]int{
-				"vm1": 54, "vm2": 54, "vm3": 54, "vm4": 54, "vm5": 54,
-				"vm6": 54, "vm7": 54, "vm8": 54, "vm9": 54, "vm10": 54,
+				"fa25-cs425-1001.cs.illinois.edu": 54, "fa25-cs425-1002.cs.illinois.edu": 54, "fa25-cs425-1003.cs.illinois.edu": 54, "fa25-cs425-1004.cs.illinois.edu": 54, "fa25-cs425-1005.cs.illinois.edu": 54,
+				"fa25-cs425-1006.cs.illinois.edu": 54, "fa25-cs425-1007.cs.illinois.edu": 54, "fa25-cs425-1008.cs.illinois.edu": 54, "fa25-cs425-1009.cs.illinois.edu": 54, "fa25-cs425-1010.cs.illinois.edu": 54,
 			},
 			Description: "Test frequent pattern matching",
 		},
@@ -50,8 +50,8 @@ func GetTestCases() []TestCase {
 			Mode:          "count",
 			ExpectedCount: 250, // 20 + 5 per VM × 10 VMs
 			ExpectedPerVM: map[string]int{
-				"vm1": 25, "vm2": 25, "vm3": 25, "vm4": 25, "vm5": 25,
-				"vm6": 25, "vm7": 25, "vm8": 25, "vm9": 25, "vm10": 25,
+				"fa25-cs425-1001.cs.illinois.edu": 25, "fa25-cs425-1002.cs.illinois.edu": 25, "fa25-cs425-1003.cs.illinois.edu": 25, "fa25-cs425-1004.cs.illinois.edu": 25, "fa25-cs425-1005.cs.illinois.edu": 25,
+				"fa25-cs425-1006.cs.illinois.edu": 25, "fa25-cs425-1007.cs.illinois.edu": 25, "fa25-cs425-1008.cs.illinois.edu": 25, "fa25-cs425-1009.cs.illinois.edu": 25, "fa25-cs425-1010.cs.illinois.edu": 25,
 			},
 			Description: "Test somewhat frequent pattern",
 		},
@@ -61,8 +61,8 @@ func GetTestCases() []TestCase {
 			Mode:          "count",
 			ExpectedCount: 50, // 5 per VM × 10 VMs
 			ExpectedPerVM: map[string]int{
-				"vm1": 5, "vm2": 5, "vm3": 5, "vm4": 5, "vm5": 5,
-				"vm6": 5, "vm7": 5, "vm8": 5, "vm9": 5, "vm10": 5,
+				"fa25-cs425-1001.cs.illinois.edu": 5, "fa25-cs425-1002.cs.illinois.edu": 5, "fa25-cs425-1003.cs.illinois.edu": 5, "fa25-cs425-1004.cs.illinois.edu": 5, "fa25-cs425-1005.cs.illinois.edu": 5,
+				"fa25-cs425-1006.cs.illinois.edu": 5, "fa25-cs425-1007.cs.illinois.edu": 5, "fa25-cs425-1008.cs.illinois.edu": 5, "fa25-cs425-1009.cs.illinois.edu": 5, "fa25-cs425-1010.cs.illinois.edu": 5,
 			},
 			Description: "Test rare pattern matching",
 		},
@@ -72,8 +72,8 @@ func GetTestCases() []TestCase {
 			Mode:          "count",
 			ExpectedCount: 180, // 5*3+3 per VM × 10 VMs
 			ExpectedPerVM: map[string]int{
-				"vm1": 15, "vm2": 15, "vm3": 15, "vm4": 15, "vm5": 15,
-				"vm6": 15, "vm7": 15, "vm8": 15, "vm9": 15, "vm10": 15,
+				"fa25-cs425-1001.cs.illinois.edu": 18, "fa25-cs425-1002.cs.illinois.edu": 18, "fa25-cs425-1003.cs.illinois.edu": 18, "fa25-cs425-1004.cs.illinois.edu": 18, "fa25-cs425-1005.cs.illinois.edu": 18,
+				"fa25-cs425-1006.cs.illinois.edu": 18, "fa25-cs425-1007.cs.illinois.edu": 18, "fa25-cs425-1008.cs.illinois.edu": 18, "fa25-cs425-1009.cs.illinois.edu": 18, "fa25-cs425-1010.cs.illinois.edu": 18,
 			},
 			Description: "Test regex with status codes",
 		},
@@ -83,8 +83,8 @@ func GetTestCases() []TestCase {
 			Mode:          "count",
 			ExpectedCount: 150, // 5*3 per VM × 10 VMs
 			ExpectedPerVM: map[string]int{
-				"vm1": 15, "vm2": 15, "vm3": 15, "vm4": 15, "vm5": 15,
-				"vm6": 15, "vm7": 15, "vm8": 15, "vm9": 15, "vm10": 15,
+				"fa25-cs425-1001.cs.illinois.edu": 15, "fa25-cs425-1002.cs.illinois.edu": 15, "fa25-cs425-1003.cs.illinois.edu": 15, "fa25-cs425-1004.cs.illinois.edu": 15, "fa25-cs425-1005.cs.illinois.edu": 15,
+				"fa25-cs425-1006.cs.illinois.edu": 15, "fa25-cs425-1007.cs.illinois.edu": 15, "fa25-cs425-1008.cs.illinois.edu": 15, "fa25-cs425-1009.cs.illinois.edu": 15, "fa25-cs425-1010.cs.illinois.edu": 15,
 			},
 			Description: "Test regex with HTTP paths",
 		},
@@ -94,8 +94,8 @@ func GetTestCases() []TestCase {
 			Mode:          "count",
 			ExpectedCount: 1, // Only in VM1
 			ExpectedPerVM: map[string]int{
-				"vm1": 1, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
-				"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
+				"fa25-cs425-1001.cs.illinois.edu": 1, "fa25-cs425-1002.cs.illinois.edu": 0, "fa25-cs425-1003.cs.illinois.edu": 0, "fa25-cs425-1004.cs.illinois.edu": 0, "fa25-cs425-1005.cs.illinois.edu": 0,
+				"fa25-cs425-1006.cs.illinois.edu": 0, "fa25-cs425-1007.cs.illinois.edu": 0, "fa25-cs425-1008.cs.illinois.edu": 0, "fa25-cs425-1009.cs.illinois.edu": 0, "fa25-cs425-1010.cs.illinois.edu": 0,
 			},
 			Description: "Pattern should only appear in VM1",
 		},
@@ -105,8 +105,8 @@ func GetTestCases() []TestCase {
 			Mode:          "count",
 			ExpectedCount: 0,
 			ExpectedPerVM: map[string]int{
-				"vm1": 0, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
-				"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
+				"fa25-cs425-1001.cs.illinois.edu": 0, "fa25-cs425-1002.cs.illinois.edu": 0, "fa25-cs425-1003.cs.illinois.edu": 0, "fa25-cs425-1004.cs.illinois.edu": 0, "fa25-cs425-1005.cs.illinois.edu": 0,
+				"fa25-cs425-1006.cs.illinois.edu": 0, "fa25-cs425-1007.cs.illinois.edu": 0, "fa25-cs425-1008.cs.illinois.edu": 0, "fa25-cs425-1009.cs.illinois.edu": 0, "fa25-cs425-1010.cs.illinois.edu": 0,
 			},
 			Description: "Pattern should not exist anywhere",
 		},
