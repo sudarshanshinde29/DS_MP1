@@ -19,7 +19,8 @@ generate_test_data() {
         
         # Create logs directory if it doesn't exist
         mkdir -p /root/generated_logs
-        
+        export GOTOOLCHAIN=auto
+        go mod tidy
         echo "Generating test data for VM$n..."
         go run unit_tests/generate_test_data.go $n
         
@@ -38,6 +39,8 @@ cleanup_test_data() {
     
     ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new root@"$host" << EOF
         echo "Connected to $host"
+        export GOTOOLCHAIN=auto
+        go mod tidy
         rm -f /root/generated_logs/vm$n.log
         echo "Cleaned up test data for VM$n"
 EOF
