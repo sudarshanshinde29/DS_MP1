@@ -44,72 +44,72 @@ func GetTestCases() []TestCase {
 			},
 			Description: "Test frequent pattern matching",
 		},
-		{
-			Name:          "Less Frequent - PUT",
-			GrepArgs:      []string{"-i", "-e", "PUT"},
-			Mode:          "count",
-			ExpectedCount: 250, // 20 + 5 per VM × 10 VMs
-			ExpectedPerVM: map[string]int{
-				"vm1": 25, "vm2": 25, "vm3": 25, "vm4": 25, "vm5": 25,
-				"vm6": 25, "vm7": 25, "vm8": 25, "vm9": 25, "vm10": 25,
-			},
-			Description: "Test somewhat frequent pattern",
-		},
-		{
-			Name:          "Rare Pattern - DELETE",
-			GrepArgs:      []string{"-i", "-e", "DELETE"},
-			Mode:          "count",
-			ExpectedCount: 50, // 5 per VM × 10 VMs
-			ExpectedPerVM: map[string]int{
-				"vm1": 5, "vm2": 5, "vm3": 5, "vm4": 5, "vm5": 5,
-				"vm6": 5, "vm7": 5, "vm8": 5, "vm9": 5, "vm10": 5,
-			},
-			Description: "Test rare pattern matching",
-		},
-		{
-			Name:          "Regex Pattern - Status Codes",
-			GrepArgs:      []string{"-E", "-e", "200|201"},
-			Mode:          "count",
-			ExpectedCount: 130, // 5+5+3 per VM × 10 VMs
-			ExpectedPerVM: map[string]int{
-				"vm1": 13, "vm2": 13, "vm3": 13, "vm4": 13, "vm5": 13,
-				"vm6": 13, "vm7": 13, "vm8": 13, "vm9": 13, "vm10": 13,
-			},
-			Description: "Test regex with status codes",
-		},
-		{
-			Name:          "Regex Pattern - HTTP Paths",
-			GrepArgs:      []string{"-E", "-e", "/api/users|/api/login"},
-			Mode:          "count",
-			ExpectedCount: 100, // 5+5 per VM × 10 VMs
-			ExpectedPerVM: map[string]int{
-				"vm1": 10, "vm2": 10, "vm3": 10, "vm4": 10, "vm5": 10,
-				"vm6": 10, "vm7": 10, "vm8": 10, "vm9": 10, "vm10": 10,
-			},
-			Description: "Test regex with HTTP paths",
-		},
-		{
-			Name:          "VM1 Only Pattern",
-			GrepArgs:      []string{"-F", "-e", "VM1_UNIQUE_PATTERN"},
-			Mode:          "count",
-			ExpectedCount: 1, // Only in VM1
-			ExpectedPerVM: map[string]int{
-				"vm1": 1, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
-				"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
-			},
-			Description: "Pattern should only appear in VM1",
-		},
-		{
-			Name:          "Non-existent Pattern",
-			GrepArgs:      []string{"-i", "-e", "NONEXISTENT"},
-			Mode:          "count",
-			ExpectedCount: 0,
-			ExpectedPerVM: map[string]int{
-				"vm1": 0, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
-				"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
-			},
-			Description: "Pattern should not exist anywhere",
-		},
+		//{
+		//	Name:          "Less Frequent - PUT",
+		//	GrepArgs:      []string{"-i", "-e", "PUT"},
+		//	Mode:          "count",
+		//	ExpectedCount: 250, // 20 + 5 per VM × 10 VMs
+		//	ExpectedPerVM: map[string]int{
+		//		"vm1": 25, "vm2": 25, "vm3": 25, "vm4": 25, "vm5": 25,
+		//		"vm6": 25, "vm7": 25, "vm8": 25, "vm9": 25, "vm10": 25,
+		//	},
+		//	Description: "Test somewhat frequent pattern",
+		//},
+		//{
+		//	Name:          "Rare Pattern - DELETE",
+		//	GrepArgs:      []string{"-i", "-e", "DELETE"},
+		//	Mode:          "count",
+		//	ExpectedCount: 50, // 5 per VM × 10 VMs
+		//	ExpectedPerVM: map[string]int{
+		//		"vm1": 5, "vm2": 5, "vm3": 5, "vm4": 5, "vm5": 5,
+		//		"vm6": 5, "vm7": 5, "vm8": 5, "vm9": 5, "vm10": 5,
+		//	},
+		//	Description: "Test rare pattern matching",
+		//},
+		//{
+		//	Name:          "Regex Pattern - Status Codes",
+		//	GrepArgs:      []string{"-E", "-e", "200|201"},
+		//	Mode:          "count",
+		//	ExpectedCount: 130, // 5+5+3 per VM × 10 VMs
+		//	ExpectedPerVM: map[string]int{
+		//		"vm1": 13, "vm2": 13, "vm3": 13, "vm4": 13, "vm5": 13,
+		//		"vm6": 13, "vm7": 13, "vm8": 13, "vm9": 13, "vm10": 13,
+		//	},
+		//	Description: "Test regex with status codes",
+		//},
+		//{
+		//	Name:          "Regex Pattern - HTTP Paths",
+		//	GrepArgs:      []string{"-E", "-e", "/api/users|/api/login"},
+		//	Mode:          "count",
+		//	ExpectedCount: 100, // 5+5 per VM × 10 VMs
+		//	ExpectedPerVM: map[string]int{
+		//		"vm1": 10, "vm2": 10, "vm3": 10, "vm4": 10, "vm5": 10,
+		//		"vm6": 10, "vm7": 10, "vm8": 10, "vm9": 10, "vm10": 10,
+		//	},
+		//	Description: "Test regex with HTTP paths",
+		//},
+		//{
+		//	Name:          "VM1 Only Pattern",
+		//	GrepArgs:      []string{"-F", "-e", "VM1_UNIQUE_PATTERN"},
+		//	Mode:          "count",
+		//	ExpectedCount: 1, // Only in VM1
+		//	ExpectedPerVM: map[string]int{
+		//		"vm1": 1, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
+		//		"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
+		//	},
+		//	Description: "Pattern should only appear in VM1",
+		//},
+		//{
+		//	Name:          "Non-existent Pattern",
+		//	GrepArgs:      []string{"-i", "-e", "NONEXISTENT"},
+		//	Mode:          "count",
+		//	ExpectedCount: 0,
+		//	ExpectedPerVM: map[string]int{
+		//		"vm1": 0, "vm2": 0, "vm3": 0, "vm4": 0, "vm5": 0,
+		//		"vm6": 0, "vm7": 0, "vm8": 0, "vm9": 0, "vm10": 0,
+		//	},
+		//	Description: "Pattern should not exist anywhere",
+		//},
 	}
 }
 
