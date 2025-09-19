@@ -7,9 +7,9 @@
 ### Prerequisites
 ~~- Go installed (per repo `go.mod`).
 - Logs present:
-  - `logs/VM1.logs/machine.*.log`
-  - `logs/VM2.logs/machine.*.log`
-  - `logs/VM3.logs/machine.*.log`
+  - `logs/VM{*}.log`
+  - `logs/VM{*}.log`
+  - `logs/VM{*}.log`
 
 ### Project layout (key paths)
 - Coordinator: `coordinator/main.go`~~
@@ -36,24 +36,24 @@ peer.machine.name2=vm3
 - Names are labels for printing.
 
 ### Start the workers (3 terminals)
-Run each in its own terminal so you can see logs. Use a glob that matches your files (e.g., `machine.*.log`).
+Run each in its own terminal so you can see logs. Use a glob that matches your files (e.g., `VM{*}.log`).
 
 Terminal 1:
 ```bash
-cd "/Users/sunvegnalwar/Fall 25 UIUC/CS 425/MP1/DS_MP1"
-go run ./worker/main.go -addr :6001 -logdir ./logs/VM1.logs -glob "machine.*.log" -label vm1 2>&1 | cat
+cd "/DS_MP1"
+go run ./worker/main.go -addr :6001 -logdir ./logs -glob "VM{*}.log" -label vm1 2>&1 | cat
 ```
 
 Terminal 2:
 ```bash
-cd "/Users/sunvegnalwar/Fall 25 UIUC/CS 425/MP1/DS_MP1"
-go run ./worker/main.go -addr :6002 -logdir ./logs/VM2.logs -glob "machine.*.log" -label vm2 2>&1 | cat
+cd "/DS_MP1"
+go run ./worker/main.go -addr :6002 -logdir ./logs -glob "VM{*}.log" -label vm2 2>&1 | cat
 ```
 
 Terminal 3:
 ```bash
-cd "/Users/sunvegnalwar/Fall 25 UIUC/CS 425/MP1/DS_MP1"
-go run ./worker/main.go -addr :6003 -logdir ./logs/VM3.logs -glob "machine.*.log" -label vm3 2>&1 | cat
+cd "/DS_MP1"
+go run ./worker/main.go -addr :6003 -logdir ./logs -glob "VM{*}.log" -label vm3 2>&1 | cat
 ```
 
 Notes:
@@ -63,7 +63,7 @@ Notes:
 ### Run the coordinator
 Count mode (case-insensitive for “error”):
 ```bash
-cd "/Users/sunvegnalwar/Fall 25 UIUC/CS 425/MP1/DS_MP1"
+cd "/DS_MP1"
 go run ./coordinator/main.go -props cluster.properties -mode count -- -i -e "error"
 ```
 
@@ -98,10 +98,10 @@ Add standard grep flags after `--`. Examples:
   lsof -nP -iTCP:6001-6003 -sTCP:LISTEN
   kill <PID>              # or kill -9 <PID>
   # Or bulk kill by command line:
-  pkill -f "/Users/sunvegnalwar/Fall 25 UIUC/CS 425/MP1/DS_MP1/worker/main.go"
+  pkill -f "/DS_MP1/worker/main.go"
   ```
 - No matches but logs contain hits:
-  - Verify glob matches expected files (e.g., `machine.*.log`, not `machine..log`).
+  - Verify glob matches expected files (e.g., `VM{*}.log`, not `machine..log`).
   - Run grep locally to confirm:
     ```bash
     /usr/bin/grep -H -c -i -e error logs/VM1.logs/machine.1.log
@@ -119,7 +119,7 @@ Add standard grep flags after `--`. Examples:
 - Coordinator exits when done; Ctrl+C to stop early.
 
 ### Example end-to-end
-- Start 3 workers (6001, 6002, 6003) with `-glob "machine.*.log"`.
+- Start 3 workers (6001, 6002, 6003) with `-glob "VM{*}.log"`.
 - Run the coordinator in count mode:
   ```bash
   go run ./coordinator/main.go -props cluster.properties -mode count -- -i -e "error"
