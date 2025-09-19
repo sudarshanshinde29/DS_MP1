@@ -1,4 +1,4 @@
-## MP1: Distributed Grep (Coordinator + Workers)
+## Distributed Grep (Coordinator + Workers)
 
 ### Overview
 - Three gRPC workers scan local log files and stream results to a coordinator.
